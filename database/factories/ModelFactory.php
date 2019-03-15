@@ -12,13 +12,32 @@
 */
 
 /** @var \Illuminate\Database\Eloquent\Factory $factory */
-$factory->define(App\User::class, function (Faker\Generator $faker) {
-    static $password;
+
+
+use App\Model\Product;
+
+$factory->define(App\Model\Product::class, function (Faker\Generator $faker) {
 
     return [
-        'name' => $faker->name,
-        'email' => $faker->unique()->safeEmail,
-        'password' => $password ?: $password = bcrypt('secret'),
-        'remember_token' => str_random(10),
+        'name'=> $faker->word,
+        'description'=> $faker->paragraph,
+        'price'=> $faker->numberBetween(100,1000),
+        'unit'=> $faker-> randomDigit,
+        'discount'=> $faker->numberBetween(5,25)
+
+    ];
+});
+
+$factory->define(App\Model\Review::class, function (Faker\Generator $faker) {
+
+    return [
+        'customer'=> $faker->word,
+        'product_id'=> function(){
+            return Product::all()->random();
+        },
+        'review' => $faker->paragraph,
+        'star' => $faker->numberBetween(0,5)
+
+
     ];
 });
