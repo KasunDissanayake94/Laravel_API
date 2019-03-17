@@ -17,6 +17,11 @@ class ProductResource extends JsonResource
         return [
             'name' => $this->name,
             'description' => $this->description,
+            'stock' => $this->unit == 0 ? 'Out of Stock' : $this->unit,
+            'rating' => round($this->reviews->sum('star') / $this->reviews->count()),
+            'href' => [
+                'reviews'=> route('reviews.index',$this->id)
+            ]
 
         ];
     }
